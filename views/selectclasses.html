@@ -1,0 +1,241 @@
+	 <div ng-controller="RegistrationController">
+	<h2 align="center">Course Selections for {{currentUser.firstname}} {{currentUser.lastname}} </h2>
+</div>
+    <div class="container-fluid">
+		  <div class="row">
+		    	<div class="col-md-6">
+			    <h2 align="center">Courses Available</h2>
+	    			<div ng-controller="CourseListCtrl">
+					  	<table st-table="courses" class="table table-striped">
+	        				<thead>
+        						<th colspan="6">
+										<input style="font-weight:bolder" placeholder="type/search for anything below...." onfocus="this.placeholder = ''" onblur="this.placeholder = 'type/search for anything below....'" ng-model="query" />
+								</th>
+								<colgroup>
+								       <col span="1" style="width: 25%;">
+								       <col span="1" style="width: 15%;">
+								       <col span="1" style="width: 15%;">
+								       <col span="1" style="width: 5%;">
+								       <col span="1" style="width: 15%;">
+								       <col span="1" style="width: 5%;">
+								  </colgroup>
+		        				<tr>
+		        					<th style="width: 35%;" id="courseName">Name</th>
+		        					<th style="width: 15%;" id="Number">Number</th>
+		        					<th style="width: 15%;" id="Days">Days</th>
+		        					<th style="width: 15%;" id="Days">Term</th>
+		        					<th style="width: 5%;" id="Credits">Credits</th>
+		        					<th style="width: 15%;" id="Faculity">Faculity</th>
+		        					<th style="width: 5%;" id="add">Add</th>   
+
+		        				</tr>
+	        				</thead>
+		        				<tbody>
+			        				<tr ng-show="currentUser" ng-repeat="course in courses | orderBy: '$id' | filter: query">
+				        					<td> <a ng-href="#/coursedetail/{{course.$id}}">{{course.coursetitle}}</a></td> 
+				        					<td>{{course.coursenumber}}</td>
+				        					<td>{{course.schedule}}</td>
+				        					<td>{{course.term}}</td>
+				        					<td>{{course.credits}}</td>
+				        					<td>{{course.faculty}}</td>
+			        				<td>
+		        					<button type="button" ng-disabled="true" ng-click="addCourse(course)" class="btn btn-sm btn-success">
+		        						<i><span class="glyphicon glyphicon-plus"></span>  <span class="glyphicon glyphicon-arrow-right"></span></i>
+		        					</button>  
+		        					</td> 
+			        				</tr>
+			        				<tr ng-hide="currentUser">
+			        					<td style="text-align: center;" colspan="7">Please log in to add classes</td>
+		        				</tbody>
+				        </table>
+					</div>
+		    	</div>
+		        <div class="col-md-6">
+		       <!-- Column for selecting classes 	 -->
+			    <h2 align="center" style="margin-bottom:59px">My Courses</h2>
+	        	<div ng-controller="MyCourseList">
+	        			<table st-table="courses" class="table table-hover" id="mytable">
+	        				<thead style="background-color: #f9f9f9;">
+	        				<tr>
+	        					<th colspan="2">Priority</th>
+	        					<th>Name</th>
+	        					<th>Number</th>
+	        					<th>Days</th>
+	        					<th>Credits</th>
+	        					<th>Faculity</th>
+	        					<th>Remove</th>
+	        				</tr>
+	        				</thead>
+	        				<tbody>
+	        				<!-- <tbody sortable> -->
+
+		        			    <tr ng-hide="userCourses.length > 0">
+		        			    	<td colspan="">
+		        			    		<div align="center"><span class="glyphicon glyphicon-arrow-left" aria-hidden="true"></span> Add Classes</div>
+		        					</td>
+		        			    </tr>
+
+		        				<tr ng-repeat="course in userCourses | orderBy: 'priority'">
+		        					<td style="vertical-align:middle;">
+		        					<button ng-class="{'btn btn-success':{{course.priority}} <= 3, 'btn btn-warning':{{course.priority}} == 4, 'btn btn-danger':{{course.priority}} > 4}">
+		        							{{course.priority}}
+		        						</button>
+		        					</td>
+		        					<td align="left" style="width:12px; vertical-align:middle;">
+		        						<!-- <button type="button" ng-hide="$first" ng-click="moveUpChoice($index, course.courseID)">
+		        							<span style="font-size:0.6em" class="glyphicon glyphicon-triangle-top"></span>
+		        						</button>
+		        						
+		        						<button type="button" ng-hide="$last" ng-click="moveDownChoice($index, course.courseID)">
+		        							<span style="font-size:0.6em" class="glyphicon glyphicon-triangle-bottom"></span>
+		        						</button> -->
+		        					</td>
+		        					<td> <a ng-href="#/coursedetail/{{course.courseID}}">{{course.coursetitle}}</a></td>
+		        					<td>{{course.coursenumber}}</td>
+		        					<td>{{course.schedule}}</td>
+		        					<td>{{course.credits}}</td>
+		        					<td >{{course.faculty}}</td>
+		        					<td style="text-align: center;">
+		        						<button type="button" ng-disabled="true" ng-click="removeCourse(course)" class="btn btn-sm btn-danger">
+		        							<i class="glyphicon glyphicon-remove">
+		        							</i>
+		        						</button>
+		        					</td>
+		        				</tr>
+
+	        				</tbody>
+	        				
+	        			</table>
+
+	        		</div>
+		        		
+		<div ng-controller="addCoursetoFB as ctrl">
+			<div align="center">
+				<button class="btn btn-primary" ng-hide="addClass" ng-click="addClass = !addClass">Manually Add A Class</button> 
+				<button class="btn btn-primary" ng-hide="!addClass" ng-click="addClass = ''">Close</button> 
+				<!-- 	<button class="btn btn-primary " name="addClass">
+    			     Manually Add A Class ng-click="show = !show"
+    			    </button> -->
+				</div>
+		        <div ng-show="addClass">				
+        			<div class="col-md-8 col-sm-8 col-xs-12 formBox">
+        			<h3 align="center" style="margin-bottom:19px">Enter the details of an indivdual class not listed to the left.</h3>
+        			 <form name="myform" ng-submit="addClassManually()" novalidate>
+        			  <div class="form-group">
+        			   <label class="control-label requiredField">
+        			    School
+        			    <span class="asteriskField">
+        			     *
+        			    </span>
+        			   </label>
+        			   <div class="">
+        			    <div class="radio">
+        			     <label class="radio">
+        			      <input name="school" type="radio" ng-model="form.radio" value="HKS" required/>
+        			      HKS
+        			     </label>
+        			    </div>
+        			    <div class="radio">
+        			     <label class="radio">
+        			      <input name="school" type="radio" ng-model="form.radio" value="HBS" required/>
+        			      HBS
+        			     </label>
+        			    </div>
+        			    <div class="radio">
+        			     <label class="radio">
+        			      <input name="school" type="radio" ng-model="form.radio" value="MIT" required/>
+        			      MIT
+        			     </label>
+        			    </div>
+        			    <div class="radio">
+        			     <label class="radio">
+        			      <input name="school" type="radio" ng-model="form.radio" value="Tufts" required/>
+        			      Tufts
+        			     </label>
+        			    </div>
+        			    <div class="radio">
+        			     <label class="radio">
+        			      <input name="school" type="radio" ng-model="form.radio" value="Other" required/>
+        			      Other
+        			     </label>
+        			    </div>
+        			   </div>
+        			  </div>
+        			  <div class="form-group ">
+        			   <label class="control-label requiredField" for="coursenumber">
+        			    Course Number
+        			    <span class="asteriskField">
+        			     *
+        			    </span>
+        			   </label>
+        			   <input class="formBoxInput" ng-model="data.coursenumber" id="coursenumber" name="coursenumber"  placeholder="i.e. AP101" onfocus="this.placeholder = ''" onblur="this.placeholder = 'i.e. AP101'" type="text" ng-required="true"/>
+        			   <p class="error validationerror"
+        			   ng-show="myform.coursenumber.$invalid && myform.coursenumber.$touched">This field is required</p>
+        			   
+        			  </div>
+        			  <div class="form-group ">
+        			   <label class="control-label requiredField" for="coursename">
+        			    Course Name
+        			    <span class="asteriskField">
+        			     *
+        			    </span>
+        			   </label>
+        			   <input class="formBoxInput" ng-model="data.coursename" id="coursename" name="coursename" placeholder="i.e. Underwater Basket Weaving" onfocus="this.placeholder = ''" onblur="this.placeholder = 'i.e. Underwater Basket Weaving'"type="text" ng-required="true"/>
+        			   <p class="error validationerror"
+        			   ng-show="myform.coursename.$invalid && myform.coursename.$touched">This field is required</p>
+        			  </div>
+        			  <div class="form-group ">
+        			   <label class="control-label requiredField" for="schedule">
+        			    Schedule
+        			    <span class="asteriskField">
+        			     *
+        			    </span>
+        			   </label>
+        			   <input class="formBoxInput" ng-model="data.schedule" id="schedule" name="schedule" placeholder="i.e. T/Th 1:15 PM" type="text" onfocus="this.placeholder = ''" onblur="this.placeholder = 'i.e. T/Th 1:15 PM'" ng-required="true"/>
+        			   <p class="error validationerror"
+        			   ng-show="myform.schedule.$invalid && myform.schedule.$touched">This field is required</p>
+        			  </div>
+        			  <div class="form-group ">
+        			   <label class="control-label requiredField" for="credits">
+        			    Credits
+        			    <span class="asteriskField">
+        			     *
+        			    </span>
+        			   </label>
+        			   <input class="formBoxInput" ng-model="data.credits" id="credits" name="credits" placeholder="i.e. 1.0" onfocus="this.placeholder = ''" onblur="this.placeholder = 'i.e. 1.0'" type="text" ng-required="true"/>
+        			   <p class="error validationerror"
+        			   ng-show="myform.credits.$invalid && myform.credits.$touched">This field is required</p>
+        			  </div>
+        			  <div class="form-group ">
+        			   <label class="control-label requiredField" for="faculty">
+        			    Faculty
+        			    <span class="asteriskField">
+        			     *
+        			    </span>
+        			   </label>
+        			   <input class="formBoxInput" ng-model="data.faculty" id="faculty" name="faculty" placeholder="i.e. Nye" onfocus="this.placeholder = ''" onblur="this.placeholder = 'i.e. Nye'" type="text" ng-required="true"/>
+        			   <p class="error validationerror"
+        			   ng-show="myform.faculty.$invalid && myform.faculty.$touched">This field is required</p>
+        			  </div>
+        			  <div class="form-group">
+        			   <div>
+
+        			    <button class="btn btn-primary" ng-disabled="myform.$invalid">Submit</button>
+        			    
+        			   </div>
+        			</form>   
+        		</div>
+					</div>
+
+
+		        </div>
+		  </div>
+	</div>
+
+     
+</div>
+
+
+
+
+						

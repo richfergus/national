@@ -1,0 +1,11 @@
+<<<<<<< HEAD
+.DS_Store
+node_modules
+bower_componets
+builds
+bac
+.tmp
+
+=======
+_site/
+>>>>>>> 8e1b120ffa3e66a61d376794cc255ba796118719

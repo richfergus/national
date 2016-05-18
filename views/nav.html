@@ -1,0 +1,51 @@
+  <div ng-controller="RegistrationController">
+<div inform class="inform-animate inform-fixed inform-shadow inform-center"></div>
+    <nav class="navbar navbar-default" role="navigation">
+      <!-- Brand and toggle get grouped for better mobile display -->
+      <div class="navbar-header">  
+        <button type="button" class="navbar-toggle" ng-init="navCollapsed = true" ng-click="navCollapsed = !navCollapsed">
+          <span class="sr-only">Toggle navigation</span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a ng-hide="currentUser" class="navbar-brand" href="#/login">National Aggregator</a>
+        <a ng-show="currentUser" class="navbar-brand" href="#/myclasses">AVNStatus National Aggregator</a>
+      </div>
+      <!-- Collect the nav links, forms, and other content for toggling -->
+      <div class="collapse navbar-collapse" collapse="navCollapsed">
+        <ul class="nav navbar-nav navbar-right">
+          <li><a ng-hide="currentUser" ng-href="#/login">Login</a></li>
+  		    <li><a ng-hide="currentUser" ng-href="#/register">Register</a></li>
+  		    <li><a ng-show="currentUser" ng-href="#/selectclasses">Select Courses</a></li>
+          <li ng-show="currentUser" class="dropdown" dropdown="">
+              <a href="#" class="dropdown-toggle" dropdown-toggle="" data-toggle="dropdown">View<b class="caret"></b>
+              </a>
+              <ul class="dropdown-menu" role="menu">
+                <li>
+                  <a ng-href="#/myclasses">My Courses</a>
+                </li>
+                <li>
+                  <a ng-href="#/users">Fellows Courses</a>
+                </li>
+                <li>
+                  <a ng-href="#/allclasses">Courses With Fellows</a>
+                </li>
+                
+              </ul>
+          </li>
+          <li ng-show="currentUser" class="dropdown" dropdown="">
+              <a href="#" class="dropdown-toggle" dropdown-toggle="" data-toggle="dropdown">{{ currentUser.firstname}}<b class="caret"></b>
+              </a>
+              <ul class="dropdown-menu" role="menu">
+                <li>
+                  <a ng-click="logout()" href="#/logout">Logout</a>
+                </li>
+                
+              </ul>
+          </li>
+        </ul>
+      </div>
+      <!-- /.navbar-collapse -->
+    </nav>
+</div>

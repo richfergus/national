@@ -1,0 +1,51 @@
+<div class="container-fluid">
+		  <div class="row">
+		    	<div class="col-md-4">
+	    			<div ng-controller="CourseDetailCrtl">
+			    <h2>{{courseDetails.coursename}} <code>{{courseDetails.coursenumber}}</code></h2>
+	    				<div class="bs-callout bs-callout-warning" id="callout-inputgroup-container-body">
+	    				<h3>School: <span style="color: black; font-weight: 700;">{{courseDetails.school}}</span></h3>
+	    				<p>Course Meetings: <code>{{courseDetails.schedule}}</code></p>
+						<p>Credits <code>{{courseDetails.credits}}</code></p>
+						<p>Term <code>{{courseDetails.term}}</code></p>
+						<p>Faculty <code>{{courseDetails.faculty}}</code></p>
+
+	    				 <p> </p> </div>
+	    				 <br>
+						<a href="http://www.hks.harvard.edu/degrees/teaching-courses/course-listing/{{courseDetails.coursenumber}}">More Information</a>
+						<hr>
+	    				<code>Other NSF Fellows In this Course</code>
+					  	
+					</div>
+					<div ng-controller="OthersInCourseCtrl">
+						<table st-table="courses" class="table table-striped">
+		        				<thead>
+									<colgroup>
+									       <col span="1" style="width: 35%;">
+									       <col span="1" style="width: 15%;">
+
+									       
+									  </colgroup>
+			        				<tr>
+			        					<th colspan="1" st-sort="courseName">Names</th>
+			        					<th colspan="1" st-sort="courseName">Priority</th>
+			        				</tr>
+		        				</thead>
+		        				<tbody>
+			        				<tr ng-repeat="course in othersInCourse | orderBy:'priority'">
+		        					<td> <a ng-href="#/courses/{{course.$id}}">{{course.firstname}} {{course.lastname}}</a></td>
+        							<td style="text-align: center;">		
+        					      	 	<button ng-class="{'btn btn-success':{{course.priority}} <= 3, 'btn btn-warning':{{course.priority}} == 4, 'btn btn-danger':{{course.priority}} > 4}">
+ 			        							{{course.priority}}
+ 			        						</button>
+        							</td>
+			        				</tr>
+		        				</tbody>
+				        </table>
+				       </div> 
+		    	</div>
+		
+		
+ 		</div>
+</div>
+
