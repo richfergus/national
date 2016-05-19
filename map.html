@@ -1,0 +1,176 @@
+<!-- <script type="text/javascript" src="js/jquery.min.js"></script> -->
+<script  src="https://code.jquery.com/jquery-2.2.3.min.js"   integrity="sha256-a23g1Nt4dtEYOj7bR+vTu7+T8VP13humZFBJNIYoEJo="   crossorigin="anonymous"></script>
+
+
+<style type="text/css">
+#container {
+    height: 100%;  
+    width: 100%; 
+    margin: 0 auto; 
+}
+
+.highcharts-tooltip>span {
+    padding: 10px;
+    white-space: normal !important;
+    width: 200px;
+}
+
+.loading {
+    margin-top: 10em;
+    text-align: center;
+    color: gray;
+}
+
+.infoPanel {
+    font-size: 14px;
+    width: 150px;
+    border: 2px #4d4c4d solid;
+    height: 70px;
+    background: #ffffff; /* Old browsers */
+background: -moz-linear-gradient(top,  #ffffff 0%, #f1f1f1 28%, #f1f1f1 28%, #e1e1e1 29%, #f6f6f6 100%); /* FF3.6+ */
+background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#ffffff), color-stop(28%,#f1f1f1), color-stop(28%,#f1f1f1), color-stop(29%,#e1e1e1), color-stop(100%,#f6f6f6)); /* Chrome,Safari4+ */
+background: -webkit-linear-gradient(top,  #ffffff 0%,#f1f1f1 28%,#f1f1f1 28%,#e1e1e1 29%,#f6f6f6 100%); /* Chrome10+,Safari5.1+ */
+background: -o-linear-gradient(top,  #ffffff 0%,#f1f1f1 28%,#f1f1f1 28%,#e1e1e1 29%,#f6f6f6 100%); /* Opera 11.10+ */
+background: -ms-linear-gradient(top,  #ffffff 0%,#f1f1f1 28%,#f1f1f1 28%,#e1e1e1 29%,#f6f6f6 100%); /* IE10+ */
+background: linear-gradient(to bottom,  #ffffff 0%,#f1f1f1 28%,#f1f1f1 28%,#e1e1e1 29%,#f6f6f6 100%); /* W3C */
+filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', endColorstr='#f6f6f6',GradientType=0 ); /* IE6-9 */
+
+
+    
+}
+
+
+.f32 {
+    vertical-align: middle !important;
+}
+.NG {
+    float: right;
+    max-width:100%;
+    max-height:100%;
+    width: 110px;
+    height: 120px;
+    padding-right: 200px;
+    
+}
+.NG img{
+    width: 100%;
+    height: auto;
+    border: 7px #3399FF solid;
+    padding: 2px;
+}
+</style>
+
+<script type="text/javascript">
+$(document).ready(function(){
+
+
+    $("#click").click(function(){ 
+                    $('#click').css({"background-color":"#f00", "color":"#fff", "cursor":"inherit"}).text("Open this window again and this message will still be here.");
+                    return false;
+                });
+    });
+
+$(function () {
+
+    $.getJSON('https://api.myjson.com/bins/2v9uv', function (data) {
+
+        // Make codes uppercase to match the map data
+  
+        // Instanciate the map
+        $('#container').highcharts('Map', {
+
+            chart : {
+                borderWidth : 0
+            },
+
+            title : {
+                text : 'ARNG RW Cargo/Utility Michael',
+                 style: {
+                    fontWeight: 'bold',
+                    fontSize: '30px'
+                }
+            },
+
+            legend: {
+                layout: 'vertical',
+                borderWidth: 0,
+                backgroundColor: 'rgba(255,255,255,0.85)',
+                floating: true,
+                align: 'right',
+                verticalAlign: 'bottom',
+                symbolPadding: 10,
+                symbolWidth: 70,
+                 shadow: true,
+                  title: {
+                text: 'Legend<br/><span style="font-size: 9px; color: #666; font-weight: normal">Available RW MDS</span>',
+                style: {
+                    fontStyle: 'italic'
+                }
+            },
+
+
+               
+            },
+
+            mapNavigation: {
+                enabled: true
+            },
+            tooltip: {
+                backgroundColor: 'none',
+                borderWidth: 0,
+                shadow: false,
+                useHTML: true,
+                padding: 0,
+                pointFormat: '<div class="infoPanel"><img class="f32" src="images/icons/states/{point.code}.png">' 
+                    + '<b> {point.name}</b><br><img style="padding:0 6 0 4" src="images/60.png"  height="16">= <b>{point.UH-60}</b>' + '<br><img src="images/47.png" height="16">= <b>{point.CH-47}</b></div>',
+                positioner: function () {
+                    return { x: 0, y: 410 };
+                }
+            },
+
+            colorAxis: {
+                min: 1,
+                type: 'logarithmic',
+                minColor: '#FF0000',
+                maxColor: '#000022',
+                stops: [
+                    [0, '#FFFFCC'],
+                    [0.57, '#99FF66'],
+                    [1, '#009900']
+                ]
+            },
+                point: {
+                        
+                    },
+
+            series : [{
+                animation: {
+                    duration: 400
+                },
+                data : data,
+                mapData: Highcharts.maps['countries/us/custom/us-all-territories'],
+                joinBy: ['postal-code', 'code'],
+                dataLabels: {
+                    enabled: true,
+                    color: 'white',
+                    format: '{point.code}'
+                },
+                name: 'Aircraft Availability',
+                events: {
+                            // On click, look for a detailed map
+                            click: function () {
+                                $st = 'includes/consolidatedMaintanceOutput2.cfm?StateAb='+event.point.code+'&StateName='+encodeURIComponent(event.point.name); 
+                                $.colorbox({href:$st});
+                              
+                            }
+                        },
+                
+            }]
+        });
+
+    });
+});
+</script>
+    <div id="container"></div>
+   
+

@@ -165,6 +165,22 @@ angular.module('myApp').controller('CourseDetailCrtl', ['$scope','$rootScope','$
                            };
              });
           }]);
+angular.module('myApp').controller('nationalMap', ['$scope','$rootScope','$firebaseObject', '$http', '$scope',
+     function($scope,$rootScope, $firebaseObject,$http, inform) {
+
+
+          $http.get('https://api.myjson.com/bins/2v9uv').success(function(data) {
+              console.log(data);
+          });
+
+            Highcharts.chart('container', {
+                    
+            })
+
+
+
+     }]);
+
 
 angular.module('myApp').controller('addCoursetoFB', ['$scope','$rootScope','$firebaseObject', 'inform',
      function($scope,$rootScope, $firebaseObject, inform) {
@@ -319,8 +335,8 @@ myApp.config(['$routeProvider', function($routeProvider) {
       templateUrl: 'views/courseusers.html',
       controller: 'RegistrationController'
     }).
-    when('/users', {
-      templateUrl: 'views/users.html',
+    when('/map', {
+      templateUrl: 'views/map.html',
       controller: 'RegistrationController'
     }).
       when('/courses/:regUser', {
